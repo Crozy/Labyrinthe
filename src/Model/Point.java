@@ -6,7 +6,12 @@ public class Point implements Comparable<Point>{
 	private int x;
 	private int y;
 	private Arrete[] voisin;
-	
+	private int coutG;
+	private int coutH;
+	private int coutF;
+	private Point predecesseur;
+	private Point successeur;
+
 	public Point(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -65,6 +70,9 @@ public class Point implements Comparable<Point>{
 	
 	//Retourne le point si il est possible d accès, sinon retourn null
 	public Point GetSud(){
+		if(voisin[3] == null){
+			return null;
+		}
 		if(voisin[3].getType() == Matiere.mur || voisin[3].getPoint1() == null || voisin[3].getPoint2() == null){
 			return null;
 		}
@@ -76,6 +84,9 @@ public class Point implements Comparable<Point>{
 	
 	//Retourne le point si il est possible d accès, sinon retourn null
 	public Point GetNord(){
+		if(voisin[1] == null){
+			return null;
+		}
 		if(voisin[1].getType() == Matiere.mur || voisin[1].getPoint1() == null || voisin[1].getPoint2() == null){
 			return null;
 		}
@@ -87,6 +98,9 @@ public class Point implements Comparable<Point>{
 	
 	//Retourne le point si il est possible d accès, sinon retourn null
 	public Point GetOuest(){
+		if(voisin[0] == null){
+			return null;
+		}
 		if(voisin[0].getType() == Matiere.mur || voisin[0].getPoint1() == null || voisin[0].getPoint2() == null){
 			return null;
 		}
@@ -98,6 +112,9 @@ public class Point implements Comparable<Point>{
 	
 	//Retourne le point si il est possible d accès, sinon retourn null
 	public Point GetEst(){
+		if(voisin[2] == null){
+			return null;
+		}
 		if(voisin[2].getType() == Matiere.mur || voisin[2].getPoint1() == null || voisin[2].getPoint2() == null){
 			return null;
 		}
@@ -161,5 +178,45 @@ public class Point implements Comparable<Point>{
 		}
 		voisin[tmp].setType(Matiere.corridor);
 		return voisin[tmp].Voisin(this);
+	}
+
+	public int getCoutG() {
+		return coutG;
+	}
+
+	public void setCoutG(int coutG) {
+		this.coutG = coutG;
+	}
+
+	public int getCoutH() {
+		return coutH;
+	}
+
+	public void setCoutH(int coutH) {
+		this.coutH = coutH;
+	}
+
+	public int getCoutF() {
+		return coutF;
+	}
+
+	public void setCoutF(int coutF) {
+		this.coutF = coutF;
+	}
+
+	public Point getPredecesseur() {
+		return predecesseur;
+	}
+
+	public void setPredecesseur(Point predecesseur) {
+		this.predecesseur = predecesseur;
+	}
+
+	public Point getSuccesseur() {
+		return successeur;
+	}
+
+	public void setSuccesseur(Point successeur) {
+		this.successeur = successeur;
 	}
 }

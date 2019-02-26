@@ -9,6 +9,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.application.Platform;
+
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import java.awt.event.ActionEvent;
@@ -20,6 +22,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import Model.*;
 import View.*;
 import Model.Arrete.Matiere;
+import org.omg.CORBA.INTERNAL;
 
 public class Controller implements ActionListener
 {
@@ -88,6 +91,8 @@ public class Controller implements ActionListener
 	    model= new Model();
 	    carte = new CarteDistance();
 	    initPorte();
+	    algo();
+	    int t = 0;
 	    //initMonstre();
 	}
 	
@@ -372,7 +377,13 @@ public class Controller implements ActionListener
                             	
                     			int x =joueur.GetPosition().GetX();
                     			int y =joueur.GetPosition().GetY();
-                    			
+
+                    			Point currentPoint = Model.getLabyrinth().GetPoint(joueur.GetPosition().GetX(), joueur.GetPosition().GetY());
+                    			if(currentPoint.getSuccesseur() != null){
+                    			    Point successeur = currentPoint.getSuccesseur();
+                    			    joueur.SetPosition(successeur);
+                                }
+
                 				joueur.setTurn(0);
                 				//joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetSud());
                     			
@@ -394,5 +405,50 @@ public class Controller implements ActionListener
 			return joueur.getIdImage();
 		//return monstres[i].getIdImage();
 	}
+
+	public void algo(){
+        ArrayList<Point> aExplorer = new ArrayList<>();
+        ArrayList<Point> visites = new ArrayList<>();
+        aExplorer.add(Model.getLabyrinth().GetPoint(joueur.GetPosition().GetX(), joueur.GetPosition().GetY()));
+        Point pointACoutMinimal = Model.getLabyrinth().GetPoint(joueur.GetPosition().GetX(), joueur.GetPosition().GetY());
+        while(!aExplorer.isEmpty() && !aExplorer.contains(arrivee)){
+            aExplorer.remove(pointACoutMinimal);
+            visites.add(pointACoutMinimal);
+            if(pointACoutMinimal.GetNord() != null && !visites.contains(pointACoutMinimal.GetNord())){
+                computeGHAndPredecesseur(pointACoutMinimal.GetNord(), pointACoutMinimal);
+                aExplorer.add(pointACoutMinimal.GetNord());
+            }
+            if(pointACoutMinimal.GetSud() != null && !visites.contains(pointACoutMinimal.GetSud())){
+                computeGHAndPredecesseur(pointACoutMinimal.GetSud(), pointACoutMinimal);
+                aExplorer.add(pointACoutMinimal.GetSud());
+            }
+            if(pointACoutMinimal.GetEst() != null && !visites.contains(pointACoutMinimal.GetEst())){
+                computeGHAndPredecesseur(pointACoutMinimal.GetEst(), pointACoutMinimal);
+                aExplorer.add(pointACoutMinimal.GetEst());
+            }
+            if(pointACoutMinimal.GetOuest() != null && !visites.contains(pointACoutMinimal.GetOuest())){
+                computeGHAndPredecesseur(pointACoutMinimal.GetOuest(), pointACoutMinimal);
+                aExplorer.add(pointACoutMinimal.GetOuest());
+            }
+            int coutMin = Integer.MAX_VALUE;
+            for(Point p : aExplorer){
+                if(p.getCoutF() < coutMin){
+                    pointACoutMinimal = p;
+                }
+            }
+            pointACoutMinimal.getPredecesseur().setSuccesseur(pointACoutMinimal);
+
+        }
+	}
+
+	private void computeGHAndPredecesseur(Point currentVoisin, Point predecesseur){
+        int coutGCurrentVoisinX = Math.abs(currentVoisin.GetX() - joueur.GetPosition().GetX());
+        int coutGCurrentVoisinY = Math.abs(currentVoisin.GetY() - joueur.GetPosition().GetY());
+        currentVoisin.setCoutG(coutGCurrentVoisinX + coutGCurrentVoisinY);
+        int coutHCurrentVoisinX = Math.abs(currentVoisin.GetX() - arrivee.GetX());
+        int coutHCurrentVoisinY = Math.abs(currentVoisin.GetY() - arrivee.GetY());
+        currentVoisin.setCoutH(coutHCurrentVoisinX + coutHCurrentVoisinY);
+        currentVoisin.setPredecesseur(predecesseur);
+    }
 }
 
