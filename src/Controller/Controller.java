@@ -343,14 +343,14 @@ public class Controller implements ActionListener {
 
 	}
 
-//	private static void AttraperPiece() {
-//		for (int i = 0; i < nbcoins; i++) {
-//			if (joueur.GetPosition().compareTo(getCoin(i)) == 0) {
-//				coins[i] = new Point(-1, -1);
-//				score.AjouterScore(100);
-//			}
-//		}
-//	}
+	private static void AttraperPiece() {
+		for (int i = 0; i < nbcoins; i++) {
+			if (joueur.GetPosition().compareTo(getCoin(i)) == 0) {
+				coins[i] = new Point(-1, -1);
+				score.AjouterScore(100);
+			}
+		}
+	}
 
 	public static EventHandler<KeyEvent> eventHandlerButton = new EventHandler<KeyEvent>() {
 		public void handle(KeyEvent event) {
@@ -375,7 +375,7 @@ public class Controller implements ActionListener {
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetEst());
 			}
 			// GameOver();
-			// AttraperPiece();
+			 AttraperPiece();
 			ActualiserCarte();
 		}
 
@@ -408,6 +408,7 @@ public class Controller implements ActionListener {
 						int y = joueur.GetPosition().GetY();
 
 						if((joueur.GetPosition().GetX() != arrivee.GetX()) || (joueur.GetPosition().GetY() != arrivee.GetY())){
+							AttraperPiece();
 							algo();
 						
 						
@@ -416,6 +417,10 @@ public class Controller implements ActionListener {
 						if (currentPoint.getSuccesseur() != null) {
 							Point successeur = currentPoint.getSuccesseur();
 							joueur.SetPosition(successeur);
+						}
+						
+						if(bloque) {
+							choiceAction();
 						}
 						}
 						//choiceAction();
@@ -634,7 +639,8 @@ public class Controller implements ActionListener {
 				System.out.println("OUEST");
 				bloque = false;
 			} else {
-				choiceAction();
+				//choiceAction();
+				bloque = true;
 			}
 
 			int coutMin = Integer.MAX_VALUE;
