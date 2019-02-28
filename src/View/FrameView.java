@@ -1,20 +1,11 @@
 package View;
 
-
-
-
-
-import java.io.File;
-
 import Controller.Controller;
 import Controller.Interrupteur.Action;
 import Model.Graph;
 import Model.Point;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -260,8 +251,6 @@ public class FrameView extends Pane{
 			}
 		}
 	}
-
-
 	
 	public static boolean GetInit() {
 		return init;

@@ -2,8 +2,6 @@ package Controller;
 
 import javafx.event.*;
 import javafx.scene.input.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.application.Platform;
 
@@ -12,18 +10,13 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import javax.xml.crypto.dsig.spec.HMACParameterSpec;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import Model.*;
 import View.*;
-import Model.Arrete.Matiere;
-import org.omg.CORBA.INTERNAL;
 
 public class Controller implements ActionListener {
 	private static Joueur joueur;
@@ -35,10 +28,7 @@ public class Controller implements ActionListener {
 	private static Point[] coins;
 	public int tour = 0;
 	private Boolean bloque = true;
-	private Boolean debutParti = true;
 	private HashMap<String, Node> memoir = new HashMap();
-	private ArrayList<Point> listCheminEffectue;
-	private String actionPrec = null;
 
 	// private static Monstre[] monstres;
 	private static int nbMonstre = 1;
@@ -51,9 +41,6 @@ public class Controller implements ActionListener {
 
 	private static Score score;
 	private static int niveau = 0;
-
-//	private ArrayList<Point> aExplorer = new ArrayList<>();
-//	private ArrayList<Point> visites = new ArrayList<>();
 
 	public static int getScore() {
 		return score.GetScore();
@@ -68,10 +55,7 @@ public class Controller implements ActionListener {
 	}
 
 	public static int getTurn(int i) {
-		// if(i==nbMonstre) {
 		return joueur.getTurn();
-		// else
-		// return monstres[i].getTurn();
 	}
 
 	public static Point GetJoueurPosition() {
@@ -83,7 +67,6 @@ public class Controller implements ActionListener {
 	}
 
 	public static void ActualiserCarte() {
-		// carte = new CarteDistance();
 	}
 
 	public static Controller getInstance() {
@@ -109,124 +92,9 @@ public class Controller implements ActionListener {
 		model = new Model();
 		carte = new CarteDistance();
 		initPorte();
-		//algo();
 		int t = 0;
-		// initMonstre();
 	}
 
-//	private static void initMonstre() {
-//		int i = 0;
-//		while(i < nbMonstre) {
-//			if(niveau == 0) {
-//				monstres = new Monstre[nbMonstre];
-//				monstres[i] = new MonstreLent((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[i].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//			}
-//			if(niveau == 1) {
-//				nbPorte=1;
-//				monstres = new Monstre[nbMonstre];
-//				monstres[i] = new MonstreModere((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[i].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//			}
-//			if(niveau == 2) {
-//				monstres[i] = new MonstreRapide((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[i].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//			}
-//			if(niveau == 3) {
-//				nbPorte=2;
-//				nbMonstre=2;
-//				monstres = new Monstre[nbMonstre];
-//				monstres[0] = new MonstreLent((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[0].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//				monstres[1] = new MonstreModere((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[1].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//			}
-//			if(niveau == 4) {
-//				monstres = new Monstre[nbMonstre];
-//				monstres[0] = new MonstreLent((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[0].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//				monstres[1] = new MonstreRapide((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[1].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//			}
-//			if(niveau == 5) {
-//				nbPorte=3;
-//				monstres = new Monstre[nbMonstre];
-//				monstres[0] = new MonstreModere((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[0].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//				monstres[1] = new MonstreRapide((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[1].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//			}
-//			if(niveau == 6) {
-//				nbMonstre=3;
-//				monstres = new Monstre[nbMonstre];
-//				monstres[0] = new MonstreLent((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[0].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//				monstres[1] = new MonstreModere((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[1].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//				monstres[2] = new MonstreRapide((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[2].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//			}
-//			if(niveau == 7) {
-//				nbMonstre=3;
-//				monstres = new Monstre[nbMonstre];
-//				monstres[0] = new MonstreModere((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[0].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//				monstres[1] = new MonstreModere((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[1].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//				monstres[2] = new MonstreRapide((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[2].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//			}
-//			if(niveau == 8) {
-//				nbPorte=4;
-//				nbMonstre=3;
-//				monstres = new Monstre[nbMonstre];
-//				monstres[0] = new MonstreModere((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[0].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//				monstres[1] = new MonstreRapide((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[1].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//				monstres[2] = new MonstreRapide((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[2].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//			}
-//			if(niveau == 9) {
-//				nbMonstre=3;
-//				monstres = new Monstre[nbMonstre];
-//				monstres[0] = new MonstreRapide((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[0].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//				monstres[1] = new MonstreRapide((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[1].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//				monstres[2] = new MonstreRapide((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[2].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//			}
-//			else {
-//				monstres = new Monstre[nbMonstre];
-//				monstres[i] = new MonstreRapide((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
-//				if(monstres[i].GetPosition().compareTo(joueur.GetPosition())==0)
-//					i--;
-//			}
-//			i++;
-//		}
-//	}
 	private static void initPorte() {
 		int i = 0;
 		portes = new Interrupteur[nbPorte * 2];
@@ -277,9 +145,7 @@ public class Controller implements ActionListener {
 	}
 
 	public static Point positionPersonnage(int i) {
-		// if(i == nbMonstre)
 		return joueur.GetPosition();
-		// return monstres[i].GetPosition();
 	}
 
 	public static Point positionInterrupteur(int i) {
@@ -293,35 +159,6 @@ public class Controller implements ActionListener {
 		timer = new AnimationTimer(getInstance());
 		timer.start();
 	}
-//	private static void GameOver() {
-//		for(int i = 0; i < nbMonstre; i++) {
-//			if(joueur.GetPosition().compareTo(monstres[i].GetPosition()) == 0) {
-//				joueur.SetPosition(new Point(0,0));
-//				arrivee = new Point(tailleLabyrinthe-1,tailleLabyrinthe-1);
-//				model.setLabyrinth(new Graph(tailleLabyrinthe,tailleLabyrinthe));
-//				initPorte();
-//				initMonstre();
-//				initCoins();
-//				score.PerdreScore();
-//				break;
-//			}
-//}algo
-
-//		if(joueur.GetPosition().compareTo(arrivee) == 0) {
-//			score.AjouterScore(nbcoins*100);
-//			niveau++;
-//			tailleLabyrinthe++;
-//			joueur.SetPosition(new Point(0,0));
-//			arrivee = new Point(tailleLabyrinthe-1,tailleLabyrinthe-1);
-//			model.setLabyrinth(new Graph(tailleLabyrinthe,tailleLabyrinthe));
-//			if(niveau>9)
-//				nbMonstre++;
-//			initMonstre();
-//			initPorte();
-//			nbcoins++;
-//			initCoins();
-//		}
-//	}
 
 	private static void initCoins() {
 		coins = new Point[nbcoins];
@@ -358,24 +195,19 @@ public class Controller implements ActionListener {
 			int x = joueur.GetPosition().GetX();
 			int y = joueur.GetPosition().GetY();
 			if (event.getCode().equals(KeyCode.UP)) {
-				// turn = 1;
 				joueur.setTurn(1);
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetNord());
 			} else if (event.getCode() == KeyCode.DOWN) {
-				// turn = 0;
 				joueur.setTurn(0);
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetSud());
 			} else if (event.getCode() == KeyCode.LEFT) {
-				// turn = 2;
 				joueur.setTurn(2);
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetOuest());
 			} else if (event.getCode() == KeyCode.RIGHT) {
-				// turn = 3;
 				joueur.setTurn(3);
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetEst());
 			}
-			// GameOver();
-			 AttraperPiece();
+			AttraperPiece();
 			ActualiserCarte();
 		}
 
@@ -386,57 +218,38 @@ public class Controller implements ActionListener {
 		scheduler.scheduleAtFixedRate(new Runnable() {
 			public void run() {
 				scheduler.shutdown();
-//                    	try {
-//							Thread.sleep(100);
-//						} catch (InterruptedException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
 				Platform.runLater(new Runnable() {
 					public void run() {
-//                            	for(int i = 0; i<nbMonstre;i++){
-//                        			monstres[i].NextPoint();
-//                            	}
 						for (int i = 0; i < nbPorte * 2; i++) {
 							if (portes[i].GetPosition().compareTo(joueur.GetPosition()) == 0)
 								portes[i].interrupteurActionner();
 						}
 						View.getInstance().raffraichir(Model.getLabyrinth());
-						// GameOver();
 
 						int x = joueur.GetPosition().GetX();
 						int y = joueur.GetPosition().GetY();
 
-						if((joueur.GetPosition().GetX() != arrivee.GetX()) || (joueur.GetPosition().GetY() != arrivee.GetY())){
+						if ((joueur.GetPosition().GetX() != arrivee.GetX())
+								|| (joueur.GetPosition().GetY() != arrivee.GetY())) {
 							AttraperPiece();
 							algo();
-						
-						
-						Point currentPoint = Model.getLabyrinth().GetPoint(joueur.GetPosition().GetX(),
-								joueur.GetPosition().GetY());
-						if (currentPoint.getSuccesseur() != null) {
-							Point successeur = currentPoint.getSuccesseur();
-							joueur.SetPosition(successeur);
-						}
-						
-						if(bloque) {
-							choiceAction();
-						}
-						}
-						//choiceAction();
-						 
-						//joueur.setTurn(0);
-						// joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetSud());
 
-						// System.out.println(arrivee.GetX() + " " + arrivee.GetY());
+							Point currentPoint = Model.getLabyrinth().GetPoint(joueur.GetPosition().GetX(),
+									joueur.GetPosition().GetY());
+							if (currentPoint.getSuccesseur() != null) {
+								Point successeur = currentPoint.getSuccesseur();
+								joueur.SetPosition(successeur);
+							}
+
+							if (bloque) {
+								choiceAction();
+							}
+						}
 
 						System.out.println("Tour : " + tour);
 
 						System.out.println(
 								"Position joueur : " + joueur.GetPosition().GetX() + " " + joueur.GetPosition().GetY());
-
-//						System.out.println("Taille H : " + Model.getLabyrinth().getH() + "taille W : "
-//								+ Model.getLabyrinth().getW());
 						tour++;
 					}
 				});
@@ -449,9 +262,7 @@ public class Controller implements ActionListener {
 	}
 
 	public static String getIdImage(int i) {
-		// if(i == nbMonstre)
 		return joueur.getIdImage();
-		// return monstres[i].getIdImage();
 	}
 
 	public void choiceAction() {
@@ -459,149 +270,69 @@ public class Controller implements ActionListener {
 		Random random = new Random();
 
 		for (Node action : memoir.values()) {
-		//	if((joueur.GetPosition().GetX() != arrivee.GetX()) || (joueur.GetPosition().GetY() != arrivee.GetY())){
 			if (action.getName().equals("nord") || action.getName().equals("sud") || action.getName().equals("est")
 					|| action.getName().equals("ouest")) {
-//				if (action.getMemoire().size() <= 1000) {
-			//	if ((joueur.GetPosition().GetX() != arrivee.GetX()) || (joueur.GetPosition().GetY() != arrivee.GetY())) {
-					int result = 1 + random.nextInt(4);
-					switch (result) {
-					case 1:
-						if (joueur.GetPosition().GetNord() != null) {
-							joueur.SetPosition(joueur.GetPosition().GetNord());
-							score.AjouterScore(score.GetScore() + 10);
-							memoir.get("nord").setScore(10);
-							memoir.get("nord").getMemoire().add(1);
-						} else {
-							score.AjouterScore(score.GetScore() - 2);
-							memoir.get("nord").setScore(-2);
-							memoir.get("nord").getMemoire().add(2);
-						}
-						break;
-					case 2:
-						if (joueur.GetPosition().GetSud() != null) {
-							joueur.SetPosition(joueur.GetPosition().GetSud());
-							score.AjouterScore(score.GetScore() + 10);
-							memoir.get("sud").setScore(10);
-							memoir.get("sud").getMemoire().add(1);
-						} else {
-							score.AjouterScore(score.GetScore() - 2);
-							memoir.get("sud").setScore(-2);
-							memoir.get("sud").getMemoire().add(2);
-						}
-						break;
-					case 3:
-						if (joueur.GetPosition().GetEst() != null) {
-							joueur.SetPosition(joueur.GetPosition().GetEst());
-							score.AjouterScore(score.GetScore() + 10);
-							memoir.get("est").setScore(10);
-							memoir.get("est").getMemoire().add(1);
-						} else {
-							score.AjouterScore(score.GetScore() - 2);
-							memoir.get("est").setScore(-2);
-							memoir.get("est").getMemoire().add(2);
-						}
-						break;
-					case 4:
-						if (joueur.GetPosition().GetOuest() != null) {
-							joueur.SetPosition(joueur.GetPosition().GetOuest());
-							score.AjouterScore(score.GetScore() + 10);
-							memoir.get("ouest").setScore(10);
-							memoir.get("ouest").getMemoire().add(1);
-						} else {
-							score.AjouterScore(score.GetScore() - 2);
-							memoir.get("ouest").setScore(-2);
-							memoir.get("ouest").getMemoire().add(2);
-						}
-						break;
-
-					default:
-						break;
+				int result = 1 + random.nextInt(4);
+				switch (result) {
+				case 1:
+					if (joueur.GetPosition().GetNord() != null) {
+						joueur.SetPosition(joueur.GetPosition().GetNord());
+						score.AjouterScore(score.GetScore() + 10);
+						memoir.get("nord").setScore(10);
+						memoir.get("nord").getMemoire().add(1);
+					} else {
+						score.AjouterScore(score.GetScore() - 2);
+						memoir.get("nord").setScore(-2);
+						memoir.get("nord").getMemoire().add(2);
 					}
-				} else {
-					//System.out.println(arrivee.GetX() + " " + arrivee.GetY());
+					break;
+				case 2:
+					if (joueur.GetPosition().GetSud() != null) {
+						joueur.SetPosition(joueur.GetPosition().GetSud());
+						score.AjouterScore(score.GetScore() + 10);
+						memoir.get("sud").setScore(10);
+						memoir.get("sud").getMemoire().add(1);
+					} else {
+						score.AjouterScore(score.GetScore() - 2);
+						memoir.get("sud").setScore(-2);
+						memoir.get("sud").getMemoire().add(2);
+					}
+					break;
+				case 3:
+					if (joueur.GetPosition().GetEst() != null) {
+						joueur.SetPosition(joueur.GetPosition().GetEst());
+						score.AjouterScore(score.GetScore() + 10);
+						memoir.get("est").setScore(10);
+						memoir.get("est").getMemoire().add(1);
+					} else {
+						score.AjouterScore(score.GetScore() - 2);
+						memoir.get("est").setScore(-2);
+						memoir.get("est").getMemoire().add(2);
+					}
+					break;
+				case 4:
+					if (joueur.GetPosition().GetOuest() != null) {
+						joueur.SetPosition(joueur.GetPosition().GetOuest());
+						score.AjouterScore(score.GetScore() + 10);
+						memoir.get("ouest").setScore(10);
+						memoir.get("ouest").getMemoire().add(1);
+					} else {
+						score.AjouterScore(score.GetScore() - 2);
+						memoir.get("ouest").setScore(-2);
+						memoir.get("ouest").getMemoire().add(2);
+					}
+					break;
+
+				default:
 					break;
 				}
-	//		} 
-//		else {
-//				break;
-//			}
+			} else {
+				break;
+			}
 		}
-
-//		for (Node action : memoir.values()) {
-//			if (action.getMemoire().size() <= 10) {
-//				if(action.getName() == "nord") {
-//					
-//				}
-//
-//				
-//			}
-//		}
-//		if (joueur.GetPosition().GetNord() != null) {
-//			joueur.SetPosition(joueur.GetPosition().GetNord());
-//			score.AjouterScore(score.GetScore() + 10);
-//			memoir.get("nord").setScore(10);
-//			if (actionPrec != null) {
-//				memoir.get(actionPrec).getMemoire().add(memoir.get("nord"));
-//			}
-//			actionPrec = "nord";
-//		} else if (joueur.GetPosition().GetSud() != null) {
-//			joueur.SetPosition(joueur.GetPosition().GetSud());
-//			score.AjouterScore(score.GetScore());
-//			memoir.get("sud").setScore(10);
-//			if (actionPrec != null) {
-//				memoir.get(actionPrec).getMemoire().add(memoir.get("sud"));
-//			}
-//			actionPrec = "sud";
-//		} else if (joueur.GetPosition().GetEst() != null) {
-//			joueur.SetPosition(joueur.GetPosition().GetEst());
-//			score.AjouterScore(score.GetScore() + 10);
-//			memoir.get("est").setScore(10);
-//			if (actionPrec != null) {
-//				memoir.get(actionPrec).getMemoire().add(memoir.get("est"));
-//			}
-//			actionPrec = "est";
-//		} else if (joueur.GetPosition().GetOuest() != null) {
-//			joueur.SetPosition(joueur.GetPosition().GetOuest());
-//			score.AjouterScore(score.GetScore() + 10);
-//			memoir.get("ouest").setScore(10);
-//			if (actionPrec != null) {
-//				memoir.get(actionPrec).getMemoire().add(memoir.get("ouest"));
-//			}
-//			actionPrec = "ouest";
-//		} else if (joueur.GetPosition().GetNord() == null) {
-//			score.AjouterScore(score.GetScore() - 2);
-//			memoir.get("nordCollision").setScore(-2);
-//			if (actionPrec != null) {
-//				memoir.get(actionPrec).getMemoire().add(memoir.get("nordCollision"));
-//			}
-//			actionPrec = "nordCollision";
-//		} else if (joueur.GetPosition().GetSud() == null) {
-//			score.AjouterScore(score.GetScore() - 2);
-//			memoir.get("sudCollision").setScore(-2);
-//			if (actionPrec != null) {
-//				memoir.get(actionPrec).getMemoire().add(memoir.get("sudCollision"));
-//			}
-//			actionPrec = "sudCollision";
-//		} else if (joueur.GetPosition().GetEst() == null) {
-//			score.AjouterScore(score.GetScore() - 2);
-//			memoir.get("estCollision").setScore(score.GetScore());
-//			if (actionPrec != null) {
-//				memoir.get(actionPrec).getMemoire().add(memoir.get("estCollision"));
-//			}
-//			actionPrec = "estCollision";
-//		} else if (joueur.GetPosition().GetOuest() == null) {
-//			score.AjouterScore(score.GetScore() - 2);
-//			memoir.get("ouestCollision").setScore(-2);
-//			if (actionPrec != null) {
-//				memoir.get(actionPrec).getMemoire().add(memoir.get("ouestCollision"));
-//			}
-//			actionPrec = "ouestCollision";
-//		}
 	}
 
 	public void algo() {
-		//if((joueur.GetPosition().GetX() != arrivee.GetX()) || (joueur.GetPosition().GetY() != arrivee.GetY())){
 		ArrayList<Point> aExplorer = new ArrayList<>();
 		ArrayList<Point> visites = new ArrayList<>();
 		aExplorer.add(Model.getLabyrinth().GetPoint(joueur.GetPosition().GetX(), joueur.GetPosition().GetY()));
@@ -612,17 +343,12 @@ public class Controller implements ActionListener {
 			visites.add(pointACoutMinimal);
 
 			bloque = true;
-			
-			//if((joueur.GetPosition().GetX() != arrivee.GetX()) && (joueur.GetPosition().GetX() != arrivee.GetX())){
+
 			if (pointACoutMinimal.GetNord() != null && !visites.contains(pointACoutMinimal.GetNord())) {
-				// if(!visites.contains(pointACoutMinimal.GetNord()){
 				computeGHAndPredecesseur(pointACoutMinimal.GetNord(), pointACoutMinimal);
 				aExplorer.add(pointACoutMinimal.GetNord());
 				System.out.println("NORD");
 				bloque = false;
-				// } else {
-
-				// }
 			} else if (pointACoutMinimal.GetSud() != null && !visites.contains(pointACoutMinimal.GetSud())) {
 				computeGHAndPredecesseur(pointACoutMinimal.GetSud(), pointACoutMinimal);
 				aExplorer.add(pointACoutMinimal.GetSud());
@@ -639,7 +365,6 @@ public class Controller implements ActionListener {
 				System.out.println("OUEST");
 				bloque = false;
 			} else {
-				//choiceAction();
 				bloque = true;
 			}
 
@@ -652,9 +377,7 @@ public class Controller implements ActionListener {
 			pointACoutMinimal.getPredecesseur().setSuccesseur(pointACoutMinimal);
 
 		}
-			
-		//}
-		
+
 	}
 
 	private void computeGHAndPredecesseur(Point currentVoisin, Point predecesseur) {

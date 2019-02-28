@@ -1,7 +1,5 @@
 package Model;
 
-import Controller.Controller;
-
 public class Personnage {
 	
 	private Point position;
